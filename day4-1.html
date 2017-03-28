@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<input type="text" id="myinput"/>
+<button type="button" onclick="getstorage()">设置值</button>
+<button type="button" onclick="huoqustorage()">获取值</button>
+<button type="button" onclick="qingkongstorage()">清空值</button>
+<script>
+    function getstorage(){
+        var content=document.getElementById("myinput").value;
+        var list=[1,2,3,4,5];
+        var obj={
+            a:"ni",
+            b:"hao"
+        }
+        localStorage.setItem("nr",content);
+        localStorage.setItem("dazhao","nihao");
+        localStorage.setItem("list",list);
+        localStorage.setItem("obj",obj);
+        window.location.href="a.html";
+    }
+    function huoqustorage(){
+        var a=localStorage.getItem("obj");
+        console.log(typeof a);
+        console.log(a);
+    }
+    function qingkongstorage(){
+        alert(localStorage.length);
+        localStorage.clear();
+    }
+</script>
+</body>
+</html>

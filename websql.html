@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    用户名: <input type="text" id="name"/>
+    密码: <input type="text" id="pwd"/>
+    <button onclick="getName()">提交</button>
+    <button onclick="queryName()">查询</button>
+    <div id="msg">
+
+    </div>
+    <script>
+        var a=2
+//      第一步:  创建数据库连接对象
+//        五个参数:1数据库名称,2.数据库版本号,3.数据库描述,4.数据库大小(单位字节)
+        var db=openDatabase("demo","","",1024*1024*10);
+//        第二步:
+//        连接数据库
+        db.transaction(function(tx){
+//            参数:1.sql语句
+            tx.executeSql("create table if not exists t_user2(u_id int primary key,u_name varchar(50),u_pwd varchar(50))")
+        })
+        function getName(){
+            var username=document.getElementById("name").value;
+            var pwd=document.getElementById("pwd").value;
+            db.transaction(function(tx){
+                tx.executeSql("insert into t_user2(u_id,u_name,u_pwd) values(?,?,?)",[a,username,pwd],function(trans,rs){
+                    console.log("正确信息"+rs);
+                },function(trans,err){
+                    console.log("错误对象"+err);
+                });
+            })
+            a++
+        }
+        function queryName(){
+            var msg=document.getElementById("msg")
+            db.transaction(function(tx){
+                tx.executeSql("select * from t_user2",[],function(trans,rs){
+                   for(var i=0;i<rs.rows.length;i++){
+                       msg.innerHTML+="用户名:"+rs.rows.item(i).u_name+"<br/>"
+                       msg.innerHTML+="密码:"+rs.rows.item(i).u_pwd+"<br/>"
+                   }
+                });
+            })
+        }
+    </script>
+</body>
+</html>
